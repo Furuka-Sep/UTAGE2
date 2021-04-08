@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 494941856516684251}
   - component: {fileID: 494941856516684248}
   m_Layer: 5
-  m_Name: logText
+  m_Name: dialogText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 494941858538498554}
   - component: {fileID: 494941858538498548}
   m_Layer: 5
-  m_Name: BackLogNode
+  m_Name: DialogNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
