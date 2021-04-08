@@ -8,7 +8,7 @@ using System.Threading;
 
 // MonoBehaviourを継承することでオブジェクトにコンポーネントとして
 // アタッチすることができるようになる
-public class GameController : MonoBehaviour
+public class TestController : MonoBehaviour
 {
     public Text nameText;
     public Text mainText;
@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour
         ColorUtility.TryParseHtmlString(defaultColorCode, out defaultColor);
         ColorUtility.TryParseHtmlString(changedColorCode, out changedColor);
         TextAsset textAsset = new TextAsset();
-        textAsset = Resources.Load("Texts/Scenario",typeof(TextAsset)) as TextAsset;
+        textAsset = Resources.Load("Texts/Scenario", typeof(TextAsset)) as TextAsset;
         string textLine = textAsset.text;
         splitText = textLine.Split(char.Parse("\n"));
         _text = string.Join("", splitText);
@@ -133,8 +133,8 @@ public class GameController : MonoBehaviour
             {
 
             }
-                // UnityエディタのPlayモードを終了する
-                
+            // UnityエディタのPlayモードを終了する
+
         }
     }
 
@@ -234,7 +234,7 @@ public class GameController : MonoBehaviour
             OnClick();
         }
     }
-    
+
     private void SkipButton()
     {
         Button btn = skip.GetComponent<Button>();
@@ -248,7 +248,7 @@ public class GameController : MonoBehaviour
             isSkip = true;
             btn.image.color = changedColor;
         }
-        if(isSkip)
+        if (isSkip)
         {
             StartCoroutine(skipButtonCoroutine);
         }

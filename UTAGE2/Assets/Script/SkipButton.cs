@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class SkipButton : MonoBehaviour
 {
+    public GameObject gameObject;
     // Start is called before the first frame update
     void Start()
     {
-        TextAsset sample = Resources.Load("Scenario") as TextAsset;
-        Debug.Log(sample);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void OnClick()
+    {
+        gameObject.SendMessage("SkipButton");
     }
 }

@@ -7,8 +7,7 @@ using System.Threading;
 public class AutoButton : MonoBehaviour
 {
     public GameObject gameObject;
-    private bool isAuto = false;
-    public int waitForSeconds = 3000;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -22,18 +21,6 @@ public class AutoButton : MonoBehaviour
     }
     public void OnClick()
     {
-        if (isAuto)
-        {
-            isAuto = false;
-        }
-        else
-        {
-            isAuto = true;
-            while (isAuto)
-            {
-                gameObject.SendMessage("OnClick");
-                Thread.Sleep(waitForSeconds);
-            }
-        }
+        gameObject.SendMessage("AutoButton");
     }
 }
