@@ -20,6 +20,9 @@ public class GameController : MonoBehaviour
     public GameObject qLoad;
     public GameObject menu;
     public GameObject bgPanel;
+    public GameObject leftChar;
+    public GameObject centerChar;
+    public GameObject rightChar;
     [SerializeField]
     private float captionSpeed = 0.2f;
 
@@ -46,8 +49,8 @@ public class GameController : MonoBehaviour
     private const string COMMAND_BACKGROUND = "background";
     private const string COMMAND_SPRITE = "_sprite";
     private const string COMMAND_COLOR = "_color";
-    [SerializeField]
-    private Image backgroundImage;
+    private const string COMMAND_ACTIVE = "_active";
+    
     [SerializeField]
     private string spritesDirectory = "BgImages/";
     [SerializeField]
@@ -57,10 +60,11 @@ public class GameController : MonoBehaviour
     private const string COMMAND_POSITION = "_pos";
     private const string COMMAND_ROTATION = "_rotate";
     private const string CHARACTER_IMAGE_PREFAB = "CharacterImage";
-    [SerializeField]
-    private GameObject characterImages;
+    
     private List<Image> _charaImageList = new List<Image>();
     private Dictionary<string, GameObject> _charaImageMap= new Dictionary<string, GameObject>();
+    private List<string> posStrings =new List<string>() { "left", "center", "right" };
+    private List<GameObject> charaObjects = new List<GameObject>();
 
 
 
@@ -70,6 +74,9 @@ public class GameController : MonoBehaviour
     // メソッドを変更
     private void Start()
     {
+        charaObjects.Add(leftChar);
+        charaObjects.Add(centerChar);
+        charaObjects.Add(rightChar);
         autoButtonCoroutine = AutoMessage();
         skipButtonCoroutine = SkipMessage();
         ColorUtility.TryParseHtmlString(defaultColorCode, out defaultColor);
@@ -329,32 +336,36 @@ public class GameController : MonoBehaviour
         return new Vector3(float.Parse(ps[0]), float.Parse(ps[1]), float.Parse(ps[2]));
     }
 
-    private void SetCharactorImage(string cmd,string parameter,string param)
+    private void SetCharactorImage(string cmd,string pos,string parameter)
     {
         cmd = cmd.Replace(" ", "");
         cmd = cmd.Replace(COMMAND_CHARACTER_IMAGE, "");
-        param = param.Substring(param.IndexOf('"') + 1, param.LastIndexOf('"') - param.IndexOf('"') - 1);
+        parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
+        pos = pos.Substring(pos.IndexOf('"') + 1, pos.LastIndexOf('"') - pos.IndexOf('"') - 1);
         switch (cmd)
         {
             case COMMAND_SPRITE:
-                GameObject charPrefab = (GameObject)Resources.Load("Prefabs/charaImage");
-                Instantiate(charPrefab,
-                    new Vector3(0.0f,0.0f,0.0f),
-                    Quaternion.identity);
-                parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
                 Sprite sp = Instantiate(Resources.Load<Sprite>(charDirectory + parameter));
-                Image charImageComponent = charPrefab.GetComponent<Image>();
+                Image charImageComponent = charaObjects[posStrings.IndexOf(pos)].GetComponent<Image>();
                 charImageComponent.sprite = sp;
-                _charaImageMap.Add(parameter, charPrefab);
                 break;
             case COMMAND_SIZE:
-                _charaImageMap[parameter].GetComponent<RectTransform>().sizeDelta = ParameterToVector3(param);
+                charaObjects[posStrings.IndexOf(pos)].GetComponent<RectTransform>().sizeDelta = ParameterToVector3(parameter);
                 break;
             case COMMAND_POSITION:
-                _charaImageMap[parameter].GetComponent<RectTransform>().anchoredPosition = ParameterToVector3(param);
+                charaObjects[posStrings.IndexOf(pos)].GetComponent<RectTransform>().anchoredPosition = ParameterToVector3(parameter);
+                break;
+            case COMMAND_ACTIVE:
+                charaObjects[posStrings.IndexOf(pos)].SetActive(ParameterToBool(parameter));
                 break;
         }
         
+    }
+
+    private bool ParameterToBool(string parameter)
+    {
+        string p = parameter.Replace(" ", "");
+        return p.Equals("true") || p.Equals("TRUE");
     }
 
 }
