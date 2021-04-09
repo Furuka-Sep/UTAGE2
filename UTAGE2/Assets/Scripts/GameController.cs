@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     public GameObject qSave;
     public GameObject qLoad;
     public GameObject menu;
+    public GameObject bgPanel;
     [SerializeField]
     private float captionSpeed = 0.2f;
 
@@ -40,6 +41,27 @@ public class GameController : MonoBehaviour
     private string changedColorCode = "#7aFF7a";
     private Color defaultColor;
     private Color changedColor;
+    private const char SEPARATE_COMMAND = '!';
+    private const char COMMAND_SEPARATE_PARAM = '=';
+    private const string COMMAND_BACKGROUND = "background";
+    private const string COMMAND_SPRITE = "_sprite";
+    private const string COMMAND_COLOR = "_color";
+    [SerializeField]
+    private Image backgroundImage;
+    [SerializeField]
+    private string spritesDirectory = "BgImages/";
+    [SerializeField]
+    private string charDirectory = "CharImages/";
+    private const string COMMAND_CHARACTER_IMAGE = "charaimg";
+    private const string COMMAND_SIZE = "_size";
+    private const string COMMAND_POSITION = "_pos";
+    private const string COMMAND_ROTATION = "_rotate";
+    private const string CHARACTER_IMAGE_PREFAB = "CharacterImage";
+    [SerializeField]
+    private GameObject characterImages;
+    private List<Image> _charaImageList = new List<Image>();
+    private Dictionary<string, GameObject> _charaImageMap= new Dictionary<string, GameObject>();
+
 
 
     // パラメーターを変更
@@ -65,6 +87,13 @@ public class GameController : MonoBehaviour
 */
     private void ReadLine(string text)
     {
+        // 最初が「!」だったら
+        if (text[0].Equals(SEPARATE_COMMAND))
+        {
+            ReadCommand(text);
+            ShowNextPage();
+            return;
+        }
         string[] ts = text.Split(SEPARATE_MAIN_START);
         string name;
         if (ts[0].Equals("none"))
@@ -79,7 +108,6 @@ public class GameController : MonoBehaviour
         nameText.text = name;
         mainText.text = "";
         _charQueue = SeparateString(main);
-        // コルーチンを呼び出す
         StartCoroutine(ShowChars(captionSpeed));
     }
 
@@ -268,5 +296,65 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void ReadCommand(string cmdLine)
+    {
+        // 最初の「!」を削除する
+        cmdLine = cmdLine.Remove(0, 1);
+        Queue<string> cmdQueue = SeparateString(cmdLine, SEPARATE_COMMAND);
+        foreach (string cmd in cmdQueue)
+        {
+            // 「=」で分ける
+            string[] cmds = cmd.Split(COMMAND_SEPARATE_PARAM);
+            // もし背景コマンドの文字列が含まれていたら
+            if (cmds[0].Contains(COMMAND_BACKGROUND))
+                SetBackgroundImage(cmds[0], cmds[1]);
+            if (cmds[0].Contains(COMMAND_CHARACTER_IMAGE))
+            {
+                SetCharactorImage(cmds[0], cmds[1], cmds[2]);
+            }
+        }
+    }
+
+    private void SetBackgroundImage(string cmd,string parameter)
+    {
+        parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
+        Sprite sp = Instantiate(Resources.Load<Sprite>(spritesDirectory+parameter));
+        Image bgImageComponent = bgPanel.GetComponent<Image>();
+        bgImageComponent.sprite = sp;
+    }
+
+    private Vector3 ParameterToVector3(string parameter)
+    {
+        string[] ps = parameter.Replace(" ", "").Split(',');
+        return new Vector3(float.Parse(ps[0]), float.Parse(ps[1]), float.Parse(ps[2]));
+    }
+
+    private void SetCharactorImage(string cmd,string parameter,string param)
+    {
+        cmd = cmd.Replace(" ", "");
+        cmd = cmd.Replace(COMMAND_CHARACTER_IMAGE, "");
+        param = param.Substring(param.IndexOf('"') + 1, param.LastIndexOf('"') - param.IndexOf('"') - 1);
+        switch (cmd)
+        {
+            case COMMAND_SPRITE:
+                GameObject charPrefab = (GameObject)Resources.Load("Prefabs/charaImage");
+                Instantiate(charPrefab,
+                    new Vector3(0.0f,0.0f,0.0f),
+                    Quaternion.identity);
+                parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
+                Sprite sp = Instantiate(Resources.Load<Sprite>(charDirectory + parameter));
+                Image charImageComponent = charPrefab.GetComponent<Image>();
+                charImageComponent.sprite = sp;
+                _charaImageMap.Add(parameter, charPrefab);
+                break;
+            case COMMAND_SIZE:
+                _charaImageMap[parameter].GetComponent<RectTransform>().sizeDelta = ParameterToVector3(param);
+                break;
+            case COMMAND_POSITION:
+                _charaImageMap[parameter].GetComponent<RectTransform>().anchoredPosition = ParameterToVector3(param);
+                break;
+        }
+        
+    }
 
 }

@@ -295,7 +295,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 070d40a176179f340970ae8107c4f379, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1442,12 +1442,12 @@ PrefabInstance:
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 325
       objectReference: {fileID: 0}
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 450
       objectReference: {fileID: 0}
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
@@ -1513,6 +1513,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: charaImage (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074931010815304162, guid: c3e71d3260df7424ba7b7221b254b4e3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3e71d3260df7424ba7b7221b254b4e3, type: 3}
@@ -2256,9 +2261,14 @@ MonoBehaviour:
   qSave: {fileID: 1734586468}
   qLoad: {fileID: 230158221}
   menu: {fileID: 2140844924}
+  bgPanel: {fileID: 32574923}
   captionSpeed: 0.05
   waitTime: 3
   skipTime: 0.1
+  backgroundImage: {fileID: 32574925}
+  spritesDirectory: BgImages/
+  charDirectory: CharImages/
+  characterImages: {fileID: 0}
 --- !u!4 &555038437
 Transform:
   m_ObjectHideFlags: 0
@@ -2481,12 +2491,12 @@ PrefabInstance:
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 376
       objectReference: {fileID: 0}
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
@@ -2552,6 +2562,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: charaImage (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074931010815304162, guid: c3e71d3260df7424ba7b7221b254b4e3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3e71d3260df7424ba7b7221b254b4e3, type: 3}
@@ -3673,12 +3688,12 @@ PrefabInstance:
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 94
       objectReference: {fileID: 0}
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
@@ -3744,6 +3759,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: charaImage (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074931010815304162, guid: c3e71d3260df7424ba7b7221b254b4e3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3e71d3260df7424ba7b7221b254b4e3, type: 3}
@@ -6208,12 +6228,12 @@ PrefabInstance:
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 325
       objectReference: {fileID: 0}
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 450
       objectReference: {fileID: 0}
     - target: {fileID: 2074931010815304157, guid: c3e71d3260df7424ba7b7221b254b4e3,
         type: 3}
@@ -6279,6 +6299,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: charaImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074931010815304162, guid: c3e71d3260df7424ba7b7221b254b4e3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3e71d3260df7424ba7b7221b254b4e3, type: 3}
