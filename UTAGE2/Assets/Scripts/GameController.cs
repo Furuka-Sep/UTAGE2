@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Collections;
 
 
 // MonoBehaviourを継承することでオブジェクトにコンポーネントとして
@@ -23,8 +24,12 @@ public class GameController : MonoBehaviour
     public GameObject leftChar;
     public GameObject centerChar;
     public GameObject rightChar;
+    public GameObject BackLog;
+    public GameObject Content;
+    public GameObject BackLogNode;
     [SerializeField]
     private float captionSpeed = 0.2f;
+    private const float CELLHEIGHT = 110.0f;
 
     // パラメーターを追加
     private const char SEPARATE_MAIN_START = '「';
@@ -65,6 +70,8 @@ public class GameController : MonoBehaviour
     private Dictionary<string, GameObject> _charaImageMap= new Dictionary<string, GameObject>();
     private List<string> posStrings =new List<string>() { "left", "center", "right" };
     private List<GameObject> charaObjects = new List<GameObject>();
+
+    
 
 
 
@@ -116,6 +123,7 @@ public class GameController : MonoBehaviour
         mainText.text = "";
         _charQueue = SeparateString(main);
         StartCoroutine(ShowChars(captionSpeed));
+        CreateBackLog(name, main);
     }
 
     private Queue<char> SeparateString(string str)
@@ -366,6 +374,24 @@ public class GameController : MonoBehaviour
     {
         string p = parameter.Replace(" ", "");
         return p.Equals("true") || p.Equals("TRUE");
+    }
+
+    private void CreateBackLog(string backLogName,string backLogText)
+    {
+        GameObject cell = Instantiate(BackLogNode);
+        cell.transform.SetParent(Content.transform, false);
+        Text logName = cell.transform.Find("charaName").GetComponent<Text>();
+        logName.text = backLogName;
+        Text logText = cell.transform.Find("dialogText").GetComponent<Text>();
+        logText.text = backLogText;
+    }
+    private void ViewLog()
+    {
+        BackLog.SetActive(true);
+    }
+    private void CloseLog()
+    {
+        BackLog.SetActive(false);
     }
 
 }
