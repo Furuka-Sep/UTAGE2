@@ -27,6 +27,11 @@ public class GameController : MonoBehaviour
     public GameObject BackLog;
     public GameObject Content;
     public GameObject BackLogNode;
+    public GameObject menuPanel;
+    public GameObject savePanel;
+    public GameObject loadPanel;
+    public GameObject ScenarioPanel;
+    public GameObject TitlePanel;
     [SerializeField]
     private float captionSpeed = 0.2f;
     private const float CELLHEIGHT = 110.0f;
@@ -393,5 +398,42 @@ public class GameController : MonoBehaviour
     {
         BackLog.SetActive(false);
     }
-
+    private void ViewMenuPanel()
+    {
+        menuPanel.SetActive(true);
+    }
+    private void CloseMenuPanel()
+    {
+        menuPanel.SetActive(false);
+    }
+    private void ViewSavePanel()
+    {
+        savePanel.SetActive(true);
+        ScenarioPanel.SetActive(false);
+    }
+    private void CloseSavePanel()
+    {
+        savePanel.SetActive(false);
+        ScenarioPanel.SetActive(true);
+    }
+    private void ViewLoadPanel()
+    {
+        loadPanel.SetActive(true);
+        ScenarioPanel.SetActive(false);
+    }
+    private void CloseLoadPanel()
+    {
+        loadPanel.SetActive(false);
+        ScenarioPanel.SetActive(true);
+    }
+    private void ViewTitlePanel()
+    {
+        TitlePanel.SetActive(true);
+        ScenarioPanel.SetActive(false);
+    }
+    private void CloseTitlePanel()
+    {
+        TitlePanel.SetActive(false);
+        ScenarioPanel.SetActive(true);
+    }
 }
