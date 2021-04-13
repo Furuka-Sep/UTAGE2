@@ -32,6 +32,7 @@ public class GameController : MonoBehaviour
     public GameObject loadPanel;
     public GameObject ScenarioPanel;
     public GameObject TitlePanel;
+    public GameObject ConfigPanel;
 
     public AudioSource OpenButtonAudio;
     public AudioSource CloseButtonAudio;
@@ -503,6 +504,18 @@ public class GameController : MonoBehaviour
         TitlePanel.SetActive(false);
         ScenarioPanel.SetActive(true);
     }
+    private void ViewConfigPanel()
+    {
+        ConfigPanel.SetActive(true);
+        ScenarioPanel.SetActive(false);
+        OpenButtonAudio.Play();
+    }
+    private void CloseConfigPanel()
+    {
+        ConfigPanel.SetActive(false);
+        ScenarioPanel.SetActive(true);
+        CloseButtonAudio.Play();
+    }
 
     /**
     * BGMの設定
@@ -607,6 +620,7 @@ public class GameController : MonoBehaviour
     {
         PlayerPrefs.SetInt("Qsave", sc);
         Debug.Log("セーブしました　ページ番号" + sc);
+        OpenButtonAudio.Play();
     }
 
     public void Qload()
@@ -614,6 +628,7 @@ public class GameController : MonoBehaviour
         sc = 0;
         isLoad = true;
         Init();
+        OpenButtonAudio.Play();
     }
   
 }
