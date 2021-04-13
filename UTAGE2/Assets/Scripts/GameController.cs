@@ -1,10 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using System.Collections;
 
 
 // MonoBehaviourを継承することでオブジェクトにコンポーネントとして
@@ -24,6 +23,7 @@ public class GameController : MonoBehaviour
     public GameObject leftChar;
     public GameObject centerChar;
     public GameObject rightChar;
+
     public GameObject BackLog;
     public GameObject Content;
     public GameObject BackLogNode;
@@ -32,6 +32,7 @@ public class GameController : MonoBehaviour
     public GameObject loadPanel;
     public GameObject ScenarioPanel;
     public GameObject TitlePanel;
+
     [SerializeField]
     private float captionSpeed = 0.2f;
     private const float CELLHEIGHT = 110.0f;
@@ -60,7 +61,20 @@ public class GameController : MonoBehaviour
     private const string COMMAND_SPRITE = "_sprite";
     private const string COMMAND_COLOR = "_color";
     private const string COMMAND_ACTIVE = "_active";
-    
+    private const string COMMAND_BGM = "bgm";
+    private const string COMMAND_SE = "se";
+
+    private const string COMMAND_DELETE = "_delete";
+    private const string COMMAND_PLAY = "_play";
+    private const string COMMAND_MUTE = "_mute";
+    private const string COMMAND_SOUND = "_sound";
+    private const string COMMAND_VOLUME = "_volume";
+    private const string COMMAND_PRIORITY = "_priority";
+    private const string COMMAND_LOOP = "_loop";
+    private const string COMMAND_FADE = "_fade";
+
+    private const string SE_AUDIOSOURCE_PREFAB = "SEAudioSource";
+
     [SerializeField]
     private string spritesDirectory = "BgImages/";
     [SerializeField]
@@ -70,14 +84,23 @@ public class GameController : MonoBehaviour
     private const string COMMAND_POSITION = "_pos";
     private const string COMMAND_ROTATION = "_rotate";
     private const string CHARACTER_IMAGE_PREFAB = "CharacterImage";
-    
+
+    [SerializeField]
+    private string prefabsDirectory = "Prefabs/";
+    [SerializeField]
+    private string audioClipsDirectory = "AudioClips/";
+    [SerializeField]
+    private AudioSource bgmAudioSource;
+    [SerializeField]
+    private GameObject seAudioSources;
+    private List<AudioSource> _seList = new List<AudioSource>();
+
     private List<Image> _charaImageList = new List<Image>();
-    private Dictionary<string, GameObject> _charaImageMap= new Dictionary<string, GameObject>();
-    private List<string> posStrings =new List<string>() { "left", "center", "right" };
+    private Dictionary<string, GameObject> _charaImageMap = new Dictionary<string, GameObject>();
+    private List<string> posStrings = new List<string>() { "left", "center", "right" };
     private List<GameObject> charaObjects = new List<GameObject>();
-
-    
-
+    public int sc = 0;
+    public bool isLoad = false;
 
 
     // パラメーターを変更
@@ -94,7 +117,7 @@ public class GameController : MonoBehaviour
         ColorUtility.TryParseHtmlString(defaultColorCode, out defaultColor);
         ColorUtility.TryParseHtmlString(changedColorCode, out changedColor);
         TextAsset textAsset = new TextAsset();
-        textAsset = Resources.Load("Texts/Scenario",typeof(TextAsset)) as TextAsset;
+        textAsset = Resources.Load("Texts/Scenario", typeof(TextAsset)) as TextAsset;
         string textLine = textAsset.text;
         splitText = textLine.Split(char.Parse("\n"));
         _text = string.Join("", splitText);
@@ -181,8 +204,8 @@ public class GameController : MonoBehaviour
             {
 
             }
-                // UnityエディタのPlayモードを終了する
-                
+            // UnityエディタのPlayモードを終了する
+
         }
     }
 
@@ -213,19 +236,40 @@ public class GameController : MonoBehaviour
 */
     private void Init()
     {
+
         _pageQueue = SeparateString(_text, SEPARATE_PAGE);
-        ShowNextPage();
+
+        if (isLoad == true)
+        {
+            int sc2 = PlayerPrefs.GetInt("Qsave");
+            Debug.Log("ロードしました　ページ番号" + sc2);
+            while (sc < sc2)
+            {
+
+                ShowNextPage();
+            }
+        }
+        else
+        {
+            ShowNextPage();
+        }
+
     }
+
 
     /**
     * 次のページを表示する
 */
+
     private bool ShowNextPage()
     {
         if (_pageQueue.Count <= 0) return false;
         ReadLine(_pageQueue.Dequeue());
+        sc++;
+        Debug.Log(sc);
         return true;
     }
+
 
     private void OnClickRight()
     {
@@ -282,7 +326,7 @@ public class GameController : MonoBehaviour
             OnClick();
         }
     }
-    
+
     private void SkipButton()
     {
         Button btn = skip.GetComponent<Button>();
@@ -296,7 +340,7 @@ public class GameController : MonoBehaviour
             isSkip = true;
             btn.image.color = changedColor;
         }
-        if(isSkip)
+        if (isSkip)
         {
             StartCoroutine(skipButtonCoroutine);
         }
@@ -332,13 +376,17 @@ public class GameController : MonoBehaviour
             {
                 SetCharactorImage(cmds[0], cmds[1], cmds[2]);
             }
+            if (cmds[0].Contains(COMMAND_BGM))
+                SetBackgroundMusic(cmds[0], cmds[1]);
+            if (cmds[0].Contains(COMMAND_SE))
+                SetSoundEffect(cmds[1], cmds[0], cmds[2]);
         }
     }
 
-    private void SetBackgroundImage(string cmd,string parameter)
+    private void SetBackgroundImage(string cmd, string parameter)
     {
         parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
-        Sprite sp = Instantiate(Resources.Load<Sprite>(spritesDirectory+parameter));
+        Sprite sp = Instantiate(Resources.Load<Sprite>(spritesDirectory + parameter));
         Image bgImageComponent = bgPanel.GetComponent<Image>();
         bgImageComponent.sprite = sp;
     }
@@ -349,7 +397,7 @@ public class GameController : MonoBehaviour
         return new Vector3(float.Parse(ps[0]), float.Parse(ps[1]), float.Parse(ps[2]));
     }
 
-    private void SetCharactorImage(string cmd,string pos,string parameter)
+    private void SetCharactorImage(string cmd, string pos, string parameter)
     {
         cmd = cmd.Replace(" ", "");
         cmd = cmd.Replace(COMMAND_CHARACTER_IMAGE, "");
@@ -372,7 +420,7 @@ public class GameController : MonoBehaviour
                 charaObjects[posStrings.IndexOf(pos)].SetActive(ParameterToBool(parameter));
                 break;
         }
-        
+
     }
 
     private bool ParameterToBool(string parameter)
@@ -381,7 +429,7 @@ public class GameController : MonoBehaviour
         return p.Equals("true") || p.Equals("TRUE");
     }
 
-    private void CreateBackLog(string backLogName,string backLogText)
+    private void CreateBackLog(string backLogName, string backLogText)
     {
         GameObject cell = Instantiate(BackLogNode);
         cell.transform.SetParent(Content.transform, false);
@@ -436,4 +484,117 @@ public class GameController : MonoBehaviour
         TitlePanel.SetActive(false);
         ScenarioPanel.SetActive(true);
     }
+
+    /**
+    * BGMの設定
+    */
+    private void SetBackgroundMusic(string cmd, string parameter)
+    {
+        cmd = cmd.Replace(COMMAND_BGM, "");
+        SetAudioSource(cmd, parameter, bgmAudioSource);
+    }
+
+    /**
+     * 効果音の設定
+     */
+    private void SetSoundEffect(string name, string cmd, string parameter)
+    {
+        cmd = cmd.Replace(COMMAND_SE, "");
+        name = name.Substring(name.IndexOf('"') + 1, name.LastIndexOf('"') - name.IndexOf('"') - 1);
+        AudioSource audio = _seList.Find(n => n.name == name);
+        if (audio == null)
+        {
+            audio = Instantiate(Resources.Load<AudioSource>(prefabsDirectory + SE_AUDIOSOURCE_PREFAB), seAudioSources.transform);
+            audio.name = name;
+            _seList.Add(audio);
+        }
+        SetAudioSource(cmd, parameter, audio);
+
+    }
+
+    /**
+     * 音声の設定
+     */
+    private void SetAudioSource(string cmd, string parameter, AudioSource audio)
+    {
+        cmd = cmd.Replace(" ", "");
+        parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
+        switch (cmd)
+        {
+            case COMMAND_PLAY:
+                audio.Play();
+                break;
+            case COMMAND_MUTE:
+                audio.mute = ParameterToBool(parameter);
+                break;
+            case COMMAND_SOUND:
+                audio.clip = LoadAudioClip(parameter);
+                break;
+            case COMMAND_VOLUME:
+                audio.volume = float.Parse(parameter);
+                break;
+            case COMMAND_PRIORITY:
+                audio.priority = int.Parse(parameter);
+                break;
+            case COMMAND_LOOP:
+                audio.loop = ParameterToBool(parameter);
+                break;
+            case COMMAND_FADE:
+                FadeSound(audio, parameter);
+                break;
+            case COMMAND_ACTIVE:
+                audio.gameObject.SetActive(ParameterToBool(parameter));
+                break;
+            case COMMAND_DELETE:
+                _seList.Remove(audio);
+                Destroy(audio.gameObject);
+                break;
+        }
+    }
+
+    /**
+    * 音声ファイルを読み出し、インスタンス化する
+    */
+    private AudioClip LoadAudioClip(string name)
+    {
+        return Instantiate(Resources.Load<AudioClip>(audioClipsDirectory + name));
+    }
+
+    /**
+     * 音声にフェードをかける
+     */
+    private void FadeSound(AudioSource audio, string parameter)
+    {
+        string[] ps = parameter.Replace(" ", "").Split(',');
+        StartCoroutine(FadeSound(audio, int.Parse(ps[0]), int.Parse(ps[1])));
+    }
+
+    /**
+    * 音のフェードを行うコルーチン
+    */
+    private IEnumerator FadeSound(AudioSource audio, float time, float volume)
+    {
+        float vo = (volume - audio.volume) / (time / Time.deltaTime);
+        bool isOut = audio.volume > volume;
+        while ((!isOut && audio.volume < volume) || (isOut && audio.volume > volume))
+        {
+            audio.volume += vo;
+            yield return null;
+        }
+        audio.volume = volume;
+    }
+
+    public void Qsave()
+    {
+        PlayerPrefs.SetInt("Qsave", sc);
+        Debug.Log("セーブしました　ページ番号" + sc);
+    }
+
+    public void Qload()
+    {
+        sc = 0;
+        isLoad = true;
+        Init();
+    }
+  
 }
