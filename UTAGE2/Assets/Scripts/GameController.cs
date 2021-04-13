@@ -33,6 +33,9 @@ public class GameController : MonoBehaviour
     public GameObject ScenarioPanel;
     public GameObject TitlePanel;
 
+    public AudioSource OpenButtonAudio;
+    public AudioSource CloseButtonAudio;
+
     [SerializeField]
     private float captionSpeed = 0.2f;
     private const float CELLHEIGHT = 110.0f;
@@ -116,6 +119,8 @@ public class GameController : MonoBehaviour
         skipButtonCoroutine = SkipMessage();
         ColorUtility.TryParseHtmlString(defaultColorCode, out defaultColor);
         ColorUtility.TryParseHtmlString(changedColorCode, out changedColor);
+        OpenButtonAudio.clip = LoadAudioClip("openButton");
+        CloseButtonAudio.clip = LoadAudioClip("closeButton");
         TextAsset textAsset = new TextAsset();
         textAsset = Resources.Load("Texts/Scenario", typeof(TextAsset)) as TextAsset;
         string textLine = textAsset.text;
@@ -287,10 +292,12 @@ public class GameController : MonoBehaviour
         if (isHide)
         {
             isHide = false;
+            OpenButtonAudio.Play();
         }
         else
         {
             isHide = true;
+            CloseButtonAudio.Play();
         }
     }
 
@@ -301,11 +308,13 @@ public class GameController : MonoBehaviour
         {
             isAuto = false;
             btn.image.color = defaultColor;
+            CloseButtonAudio.Play();
         }
         else
         {
             isAuto = true;
             btn.image.color = changedColor;
+            OpenButtonAudio.Play();
         }
         if (isAuto)
         {
@@ -334,11 +343,13 @@ public class GameController : MonoBehaviour
         {
             isSkip = false;
             btn.image.color = defaultColor;
+            CloseButtonAudio.Play();
         }
         else
         {
             isSkip = true;
             btn.image.color = changedColor;
+            OpenButtonAudio.Play();
         }
         if (isSkip)
         {
@@ -441,38 +452,46 @@ public class GameController : MonoBehaviour
     private void ViewLog()
     {
         BackLog.SetActive(true);
+        OpenButtonAudio.Play();
     }
     private void CloseLog()
     {
         BackLog.SetActive(false);
+        CloseButtonAudio.Play();
     }
     private void ViewMenuPanel()
     {
         menuPanel.SetActive(true);
+        OpenButtonAudio.Play();
     }
     private void CloseMenuPanel()
     {
         menuPanel.SetActive(false);
+        CloseButtonAudio.Play();
     }
     private void ViewSavePanel()
     {
         savePanel.SetActive(true);
         ScenarioPanel.SetActive(false);
+        OpenButtonAudio.Play();
     }
     private void CloseSavePanel()
     {
         savePanel.SetActive(false);
         ScenarioPanel.SetActive(true);
+        CloseButtonAudio.Play();
     }
     private void ViewLoadPanel()
     {
         loadPanel.SetActive(true);
         ScenarioPanel.SetActive(false);
+        OpenButtonAudio.Play();
     }
     private void CloseLoadPanel()
     {
         loadPanel.SetActive(false);
         ScenarioPanel.SetActive(true);
+        CloseButtonAudio.Play();
     }
     private void ViewTitlePanel()
     {
