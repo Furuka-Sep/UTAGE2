@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Collections;
+using System.Linq;
 
 
 // MonoBehaviourを継承することでオブジェクトにコンポーネントとして
@@ -19,8 +21,21 @@ public class TestController : MonoBehaviour
     public GameObject qSave;
     public GameObject qLoad;
     public GameObject menu;
+    public GameObject bgPanel;
+    public GameObject leftChar;
+    public GameObject centerChar;
+    public GameObject rightChar;
+    public GameObject BackLog;
+    public GameObject Content;
+    public GameObject BackLogNode;
+    public GameObject menuPanel;
+    public GameObject savePanel;
+    public GameObject loadPanel;
+    public GameObject ScenarioPanel;
+    public GameObject TitlePanel;
     [SerializeField]
     private float captionSpeed = 0.2f;
+    private const float CELLHEIGHT = 110.0f;
 
     // パラメーターを追加
     private const char SEPARATE_MAIN_START = '「';
@@ -40,6 +55,35 @@ public class TestController : MonoBehaviour
     private string changedColorCode = "#7aFF7a";
     private Color defaultColor;
     private Color changedColor;
+    private const char SEPARATE_COMMAND = '!';
+    private const char COMMAND_SEPARATE_PARAM = '=';
+    private const string COMMAND_BACKGROUND = "background";
+    private const string COMMAND_SPRITE = "_sprite";
+    private const string COMMAND_COLOR = "_color";
+    private const string COMMAND_ACTIVE = "_active";
+
+    [SerializeField]
+    private string spritesDirectory = "BgImages/";
+    [SerializeField]
+    private string charDirectory = "CharImages/";
+    private const string COMMAND_CHARACTER_IMAGE = "charaimg";
+    private const string COMMAND_SIZE = "_size";
+    private const string COMMAND_POSITION = "_pos";
+    private const string COMMAND_ROTATION = "_rotate";
+    private const string CHARACTER_IMAGE_PREFAB = "CharacterImage";
+    private const string COMMAND_JUMP = "jump_to";
+
+    private List<Image> _charaImageList = new List<Image>();
+    private Dictionary<string, GameObject> _charaImageMap = new Dictionary<string, GameObject>();
+    private List<string> posStrings = new List<string>() { "left", "center", "right" };
+    private List<GameObject> charaObjects = new List<GameObject>();
+    private const char SEPARATE_SUBSCENE = '#';
+    private Dictionary<string, Queue<string>> _subScenes =
+           new Dictionary<string, Queue<string>>();
+
+
+
+
 
 
     // パラメーターを変更
@@ -48,6 +92,9 @@ public class TestController : MonoBehaviour
     // メソッドを変更
     private void Start()
     {
+        charaObjects.Add(leftChar);
+        charaObjects.Add(centerChar);
+        charaObjects.Add(rightChar);
         autoButtonCoroutine = AutoMessage();
         skipButtonCoroutine = SkipMessage();
         ColorUtility.TryParseHtmlString(defaultColorCode, out defaultColor);
@@ -65,6 +112,13 @@ public class TestController : MonoBehaviour
 */
     private void ReadLine(string text)
     {
+        // 最初が「!」だったら
+        if (text[0].Equals(SEPARATE_COMMAND))
+        {
+            ReadCommand(text);
+            ShowNextPage();
+            return;
+        }
         string[] ts = text.Split(SEPARATE_MAIN_START);
         string name;
         if (ts[0].Equals("none"))
@@ -79,8 +133,8 @@ public class TestController : MonoBehaviour
         nameText.text = name;
         mainText.text = "";
         _charQueue = SeparateString(main);
-        // コルーチンを呼び出す
         StartCoroutine(ShowChars(captionSpeed));
+        CreateBackLog(name, main);
     }
 
     private Queue<char> SeparateString(string str)
@@ -165,7 +219,14 @@ public class TestController : MonoBehaviour
 */
     private void Init()
     {
-        _pageQueue = SeparateString(_text, SEPARATE_PAGE);
+        Queue<string> subScenes = SeparateString(_text, SEPARATE_SUBSCENE);
+        foreach (string subScene in subScenes)
+        {
+            if (subScene.Equals("")) continue;
+            Queue<string> pages = SeparateString(subScene, SEPARATE_PAGE);
+            _subScenes[pages.Dequeue()] = pages;
+        }
+        _pageQueue = _subScenes.First().Value;
         ShowNextPage();
     }
 
@@ -268,5 +329,134 @@ public class TestController : MonoBehaviour
         }
     }
 
+    private void ReadCommand(string cmdLine)
+    {
+        // 最初の「!」を削除する
+        cmdLine = cmdLine.Remove(0, 1);
+        Queue<string> cmdQueue = SeparateString(cmdLine, SEPARATE_COMMAND);
+        foreach (string cmd in cmdQueue)
+        {
+            // 「=」で分ける
+            string[] cmds = cmd.Split(COMMAND_SEPARATE_PARAM);
+            // もし背景コマンドの文字列が含まれていたら
+            if (cmds[0].Contains(COMMAND_BACKGROUND))
+                SetBackgroundImage(cmds[0], cmds[1]);
+            if (cmds[0].Contains(COMMAND_CHARACTER_IMAGE))
+            {
+                SetCharactorImage(cmds[0], cmds[1], cmds[2]);
+            }
+            if (cmds[0].Contains(COMMAND_JUMP))
+            {
+                JumpTo(cmds[1]);
+            }
+        }
+    }
 
+    private void SetBackgroundImage(string cmd, string parameter)
+    {
+        parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
+        Sprite sp = Instantiate(Resources.Load<Sprite>(spritesDirectory + parameter));
+        Image bgImageComponent = bgPanel.GetComponent<Image>();
+        bgImageComponent.sprite = sp;
+    }
+
+    private Vector3 ParameterToVector3(string parameter)
+    {
+        string[] ps = parameter.Replace(" ", "").Split(',');
+        return new Vector3(float.Parse(ps[0]), float.Parse(ps[1]), float.Parse(ps[2]));
+    }
+
+    private void SetCharactorImage(string cmd, string pos, string parameter)
+    {
+        cmd = cmd.Replace(" ", "");
+        cmd = cmd.Replace(COMMAND_CHARACTER_IMAGE, "");
+        parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
+        pos = pos.Substring(pos.IndexOf('"') + 1, pos.LastIndexOf('"') - pos.IndexOf('"') - 1);
+        switch (cmd)
+        {
+            case COMMAND_SPRITE:
+                Sprite sp = Instantiate(Resources.Load<Sprite>(charDirectory + parameter));
+                Image charImageComponent = charaObjects[posStrings.IndexOf(pos)].GetComponent<Image>();
+                charImageComponent.sprite = sp;
+                break;
+            case COMMAND_SIZE:
+                charaObjects[posStrings.IndexOf(pos)].GetComponent<RectTransform>().sizeDelta = ParameterToVector3(parameter);
+                break;
+            case COMMAND_POSITION:
+                charaObjects[posStrings.IndexOf(pos)].GetComponent<RectTransform>().anchoredPosition = ParameterToVector3(parameter);
+                break;
+            case COMMAND_ACTIVE:
+                charaObjects[posStrings.IndexOf(pos)].SetActive(ParameterToBool(parameter));
+                break;
+        }
+
+    }
+
+    private bool ParameterToBool(string parameter)
+    {
+        string p = parameter.Replace(" ", "");
+        return p.Equals("true") || p.Equals("TRUE");
+    }
+
+    private void CreateBackLog(string backLogName, string backLogText)
+    {
+        GameObject cell = Instantiate(BackLogNode);
+        cell.transform.SetParent(Content.transform, false);
+        Text logName = cell.transform.Find("charaName").GetComponent<Text>();
+        logName.text = backLogName;
+        Text logText = cell.transform.Find("dialogText").GetComponent<Text>();
+        logText.text = backLogText;
+    }
+    private void ViewLog()
+    {
+        BackLog.SetActive(true);
+    }
+    private void CloseLog()
+    {
+        BackLog.SetActive(false);
+    }
+    private void ViewMenuPanel()
+    {
+        menuPanel.SetActive(true);
+    }
+    private void CloseMenuPanel()
+    {
+        menuPanel.SetActive(false);
+    }
+    private void ViewSavePanel()
+    {
+        savePanel.SetActive(true);
+        ScenarioPanel.SetActive(false);
+    }
+    private void CloseSavePanel()
+    {
+        savePanel.SetActive(false);
+        ScenarioPanel.SetActive(true);
+    }
+    private void ViewLoadPanel()
+    {
+        loadPanel.SetActive(true);
+        ScenarioPanel.SetActive(false);
+    }
+    private void CloseLoadPanel()
+    {
+        loadPanel.SetActive(false);
+        ScenarioPanel.SetActive(true);
+    }
+    private void ViewTitlePanel()
+    {
+        TitlePanel.SetActive(true);
+        ScenarioPanel.SetActive(false);
+    }
+    private void CloseTitlePanel()
+    {
+        TitlePanel.SetActive(false);
+        ScenarioPanel.SetActive(true);
+    }
+
+    private void JumpTo(string parameter)
+    {
+        parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
+        _pageQueue = _subScenes[parameter];
+    }
 }
