@@ -1,32 +1,9 @@
 fileFormatVersion: 2
-guid: 612bca626bfe99b45aad86aa0d3a6687
+guid: 3591db0edf9df344099815b7d21409de
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - nameText: {instanceID: 0}
-  - mainText: {instanceID: 0}
-  - log: {fileID: 2574665366400525149, guid: dced8f3189bf5d0448e90c39f4a316cd, type: 3}
-  - close: {instanceID: 0}
-  - auto: {instanceID: 0}
-  - skip: {instanceID: 0}
-  - qSave: {instanceID: 0}
-  - qLoad: {instanceID: 0}
-  - menu: {instanceID: 0}
-  - bgPanel: {instanceID: 0}
-  - leftChar: {instanceID: 0}
-  - centerChar: {instanceID: 0}
-  - rightChar: {instanceID: 0}
-  - BackLog: {instanceID: 0}
-  - Content: {instanceID: 0}
-  - BackLogNode: {instanceID: 0}
-  - menuPanel: {instanceID: 0}
-  - savePanel: {instanceID: 0}
-  - loadPanel: {instanceID: 0}
-  - ScenarioPanel: {instanceID: 0}
-  - TitlePanel: {instanceID: 0}
-  - bgmAudioSource: {instanceID: 0}
-  - seAudioSources: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
