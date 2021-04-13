@@ -7,6 +7,10 @@
 !charaimg_pos="right"="200,0,0"
 !charaimg_active="left"="true"
 !charaimg_active="right"="true"
+!bgm_sound="bgm1"!bgm_loop="true"
+!bgm_play=""
+!bgm_fade="5,1"
+
 &none「むかしむかし、あるところに、おじいさんとおばあさんが住んでいました」
 
 &!background_sprite="wood"
@@ -23,6 +27,10 @@
 !charaimg_pos="center"="0,0,0"
 !charaimg_size="center"="200,200,1"
 !charaimg_active="center"="true"
+!se_sound="sesample"="se1"
+!se_priority="sesample"="150"
+!se_play="sesample"=""
+
 &桃「どんぶらこ～どんぶらこ～」
 &none「大きな桃が流れてきました」
 &おばあさん「おや、これは良いおみやげになるわ」
@@ -31,8 +39,11 @@
 &!background_sprite="house"
 &!charaimg_active="left"="true"
 !charaimg_pos="left"="-200,0,0"
+!bgm_fade="3,0"
 &none「そして、おじいさんとおばあさんが桃を食べようと桃を切ってみると」
 &!charaimg_sprite="center"="baby"
+!se_play="sesample"=""
+
 &none「なんと中から元気の良い男の赤ちゃんが飛び出してきました」
 &おじいさん「これはきっと、神さまがくださったにちがいない」
 &none「子どものいなかったおじいさんとおばあさんは、大喜びです」
@@ -47,6 +58,7 @@
 &none「そしてある日、桃太郎が言いました」
 &桃太郎「ぼく、鬼ヶ島(おにがしま)へ行って、わるい鬼を退治します」
 &none「おばあさんにきび団子を作ってもらうと、鬼ヶ島へ出かけました」
+
 
 &!background_sprite="cafe"
 &!charaimg_sprite="right"="dog_reverse"
