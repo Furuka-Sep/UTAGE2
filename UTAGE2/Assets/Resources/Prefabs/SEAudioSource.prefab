@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4520216811823294825}
   - component: {fileID: 4520216811823294824}
   m_Layer: 0
-  m_Name: SE
+  m_Name: SEAudioSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
