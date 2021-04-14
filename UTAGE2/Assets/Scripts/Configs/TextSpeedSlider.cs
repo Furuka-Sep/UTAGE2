@@ -10,14 +10,14 @@ public class TextSpeedSlider : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        slider.maxValue = 8.0f;
-        slider.minValue = 2.0f;
-        slider.value = 5.0f;
+        slider.maxValue = 3.0f;
+        slider.minValue = 1.0f;
+        slider.value = 2.0f;
     }
 
     // Update is called once per frame
     public void ChangeSlider()
     {
-        gameController.captionSpeed = slider.value/100;
+        gameController.captionSpeed = slider.value/100*3-0.01f;
     }
 }

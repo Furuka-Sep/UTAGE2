@@ -2491,6 +2491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 280474839}
   - component: {fileID: 280474840}
+  - component: {fileID: 280474841}
   m_Layer: 5
   m_Name: bgmMute
   m_TagString: Untagged
@@ -2563,8 +2564,33 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 280474841}
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
+--- !u!114 &280474841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280474838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484d46eaca8c4904bbf8cee5e036c30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1388068127}
+  toggle: {fileID: 280474840}
 --- !u!1 &307472288
 GameObject:
   m_ObjectHideFlags: 0
@@ -3118,6 +3144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 422194812}
   - component: {fileID: 422194813}
+  - component: {fileID: 422194814}
   m_Layer: 5
   m_Name: voiceMute
   m_TagString: Untagged
@@ -3190,8 +3217,33 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 422194814}
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
+--- !u!114 &422194814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422194811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484d46eaca8c4904bbf8cee5e036c30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 2010889607}
+  toggle: {fileID: 422194813}
 --- !u!1 &441040305
 GameObject:
   m_ObjectHideFlags: 0
@@ -4522,6 +4574,7 @@ GameObject:
   - component: {fileID: 627167263}
   - component: {fileID: 627167265}
   - component: {fileID: 627167264}
+  - component: {fileID: 627167266}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -4586,6 +4639,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627167262}
   m_CullTransparentMesh: 0
+--- !u!114 &627167266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627167262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484d46eaca8c4904bbf8cee5e036c30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 0}
+  toggle: {fileID: 0}
 --- !u!1 &645468341
 GameObject:
   m_ObjectHideFlags: 0
@@ -7304,6 +7371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 958368169}
   - component: {fileID: 958368170}
+  - component: {fileID: 958368171}
   m_Layer: 5
   m_Name: seMute
   m_TagString: Untagged
@@ -7376,8 +7444,33 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 958368171}
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
+--- !u!114 &958368171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958368168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484d46eaca8c4904bbf8cee5e036c30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1881987143}
+  toggle: {fileID: 958368170}
 --- !u!1 &962986420
 GameObject:
   m_ObjectHideFlags: 0
@@ -9544,6 +9637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BGMSlider: {fileID: 1388068127}
   BGMSource: {fileID: 223323316}
+  toggle: {fileID: 280474840}
 --- !u!1 &1397368628
 GameObject:
   m_ObjectHideFlags: 0
@@ -10877,6 +10971,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1623967695}
   - component: {fileID: 1623967696}
+  - component: {fileID: 1623967697}
   m_Layer: 5
   m_Name: allMute
   m_TagString: Untagged
@@ -10949,8 +11044,39 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1623967697}
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
+--- !u!114 &1623967697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623967694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f45f8a81ca8c3ba45ac4bce6b60495ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllSlider: {fileID: 1717611335}
+  BGMSlider: {fileID: 1388068127}
+  SESlider: {fileID: 1881987143}
+  VoiceSlider: {fileID: 2010889607}
+  allToggle: {fileID: 1623967696}
+  bgmToggle: {fileID: 280474840}
+  seToggle: {fileID: 958368170}
+  voiceToggle: {fileID: 422194813}
 --- !u!1 &1643188092
 GameObject:
   m_ObjectHideFlags: 0
@@ -11550,6 +11676,7 @@ MonoBehaviour:
   BGMSlider: {fileID: 1388068127}
   SESlider: {fileID: 1881987143}
   VoiceSlider: {fileID: 2010889607}
+  allToggle: {fileID: 1623967696}
 --- !u!1 &1719143205
 GameObject:
   m_ObjectHideFlags: 0
@@ -12932,6 +13059,7 @@ MonoBehaviour:
     type: 3}
   OpenSE: {fileID: 948239888}
   CloseSE: {fileID: 2077137276}
+  toggle: {fileID: 958368170}
 --- !u!1 &1888241831
 GameObject:
   m_ObjectHideFlags: 0
@@ -13702,6 +13830,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 2010889607}
   VoiceSource: {fileID: 948958566}
+  toggle: {fileID: 422194813}
 --- !u!1 &2032197680
 GameObject:
   m_ObjectHideFlags: 0
