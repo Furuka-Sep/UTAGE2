@@ -4054,6 +4054,7 @@ MonoBehaviour:
   loadPanel: {fileID: 1512533088}
   ScenarioPanel: {fileID: 420090554}
   TitlePanel: {fileID: 698181865}
+  ConfigPanel: {fileID: 1319762232}
   OpenButtonAudio: {fileID: 948239888}
   CloseButtonAudio: {fileID: 2077137276}
   captionSpeed: 0.05
@@ -6036,6 +6037,7 @@ GameObject:
   - component: {fileID: 816507698}
   - component: {fileID: 816507697}
   - component: {fileID: 816507696}
+  - component: {fileID: 816507699}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -6104,7 +6106,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 816507697}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 816507699}
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &816507697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6142,6 +6155,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816507694}
   m_CullTransparentMesh: 0
+--- !u!114 &816507699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816507694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fef853ab4c6a5ad4baeba16c16414efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameObject: {fileID: 555038435}
 --- !u!1 &821466965
 GameObject:
   m_ObjectHideFlags: 0
@@ -9413,6 +9439,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1388068126}
   - component: {fileID: 1388068127}
+  - component: {fileID: 1388068128}
   m_Layer: 5
   m_Name: BGMVolume
   m_TagString: Untagged
@@ -9491,7 +9518,32 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1388068128}
+        m_MethodName: ChangeSlider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1388068128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388068125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1cc4ccbdb0f30a43986bfb6da5e8c21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BGMSlider: {fileID: 1388068127}
+  BGMSource: {fileID: 223323316}
 --- !u!1 &1397368628
 GameObject:
   m_ObjectHideFlags: 0
@@ -10126,6 +10178,7 @@ GameObject:
   - component: {fileID: 1505098480}
   - component: {fileID: 1505098479}
   - component: {fileID: 1505098478}
+  - component: {fileID: 1505098481}
   m_Layer: 5
   m_Name: Config
   m_TagString: Untagged
@@ -10195,7 +10248,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1505098479}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1505098481}
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1505098479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10233,6 +10297,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1505098476}
   m_CullTransparentMesh: 0
+--- !u!114 &1505098481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505098476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49622e6436923d94dafa90b1fcc26a16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameObject: {fileID: 555038435}
 --- !u!1 &1511260381
 GameObject:
   m_ObjectHideFlags: 0
@@ -11251,6 +11328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1702182317}
   - component: {fileID: 1702182318}
+  - component: {fileID: 1702182319}
   m_Layer: 5
   m_Name: TextSpeed
   m_TagString: Untagged
@@ -11329,7 +11407,32 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1702182319}
+        m_MethodName: ChangeSlider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1702182319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702182316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21a18256896e1643ba101940eeea7cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1702182318}
+  gameController: {fileID: 555038436}
 --- !u!1 &1717611333
 GameObject:
   m_ObjectHideFlags: 0
@@ -11340,6 +11443,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1717611334}
   - component: {fileID: 1717611335}
+  - component: {fileID: 1717611336}
   m_Layer: 5
   m_Name: ALLVolume
   m_TagString: Untagged
@@ -11418,7 +11522,34 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1717611336}
+        m_MethodName: ChangeSlider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1717611336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717611333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80ddba18dd187ed4e97206607fd2ac89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllSlider: {fileID: 1717611335}
+  BGMSlider: {fileID: 1388068127}
+  SESlider: {fileID: 1881987143}
+  VoiceSlider: {fileID: 2010889607}
 --- !u!1 &1719143205
 GameObject:
   m_ObjectHideFlags: 0
@@ -12693,6 +12824,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1881987142}
   - component: {fileID: 1881987143}
+  - component: {fileID: 1881987144}
   m_Layer: 5
   m_Name: SEVolume
   m_TagString: Untagged
@@ -12771,7 +12903,35 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1881987144}
+        m_MethodName: ChangeSlider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1881987144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881987141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b69ce09ef8875499d8034f7c5ab495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1881987143}
+  SEPrefab: {fileID: 4520216811823294824, guid: e6960121da4de9d419b01fab07341946,
+    type: 3}
+  OpenSE: {fileID: 948239888}
+  CloseSE: {fileID: 2077137276}
 --- !u!1 &1888241831
 GameObject:
   m_ObjectHideFlags: 0
@@ -13437,6 +13597,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2010889606}
   - component: {fileID: 2010889607}
+  - component: {fileID: 2010889608}
   m_Layer: 5
   m_Name: VOICEVolume
   m_TagString: Untagged
@@ -13515,7 +13676,32 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2010889608}
+        m_MethodName: ChangeSlider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2010889608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010889605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d10fbfa8c234e04fb2d9bcc937046a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 2010889607}
+  VoiceSource: {fileID: 948958566}
 --- !u!1 &2032197680
 GameObject:
   m_ObjectHideFlags: 0

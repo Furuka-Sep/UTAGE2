@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour
     public AudioSource CloseButtonAudio;
 
     [SerializeField]
-    private float captionSpeed = 0.2f;
+    public float captionSpeed = 0.05f;
     private const float CELLHEIGHT = 110.0f;
 
     // パラメーターを追加
