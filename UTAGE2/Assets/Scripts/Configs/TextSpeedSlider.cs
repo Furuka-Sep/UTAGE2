@@ -7,6 +7,7 @@ public class TextSpeedSlider : MonoBehaviour
 {
     public Slider slider;
     public GameController gameController;
+    public SampleText sampleText;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,8 @@ public class TextSpeedSlider : MonoBehaviour
     // Update is called once per frame
     public void ChangeSlider()
     {
-        gameController.captionSpeed = slider.value/100*3-0.01f;
+        gameController.captionSpeed = 0.1f-(slider.value/100*3-0.01f);
+        sampleText.captionSpeed = 0.1f - (slider.value / 100 * 3 - 0.01f);
+        sampleText.CallLoop();
     }
 }
