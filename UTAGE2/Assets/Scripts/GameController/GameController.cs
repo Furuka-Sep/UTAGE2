@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
     private IEnumerator autoButtonCoroutine;
     public float skipTime = 0.5f;
     private IEnumerator skipButtonCoroutine;
-    private string defaultColorCode = "#43FFFE";
+    private string defaultColorCode = "#67fcff";
     private string changedColorCode = "#7aFF7a";
     private Color defaultColor;
     private Color changedColor;
@@ -309,12 +309,18 @@ public class GameController : MonoBehaviour
         if (isAuto)
         {
             isAuto = false;
+            Sprite sp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+            Image buttonImage = btn.GetComponent<Image>();
+            buttonImage.sprite = sp;
             //btn.image.color = defaultColor;
             CloseButtonAudio.Play();
         }
         else
         {
             isAuto = true;
+            Sprite sp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button"));
+            Image buttonImage = btn.GetComponent<Image>();
+            buttonImage.sprite = sp;
             //btn.image.color = changedColor;
             OpenButtonAudio.Play();
         }
@@ -344,12 +350,18 @@ public class GameController : MonoBehaviour
         if (isSkip)
         {
             isSkip = false;
+            Sprite sp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+            Image buttonImage = btn.GetComponent<Image>();
+            buttonImage.sprite = sp;
             //btn.image.color = defaultColor;
             CloseButtonAudio.Play();
         }
         else
         {
             isSkip = true;
+            Sprite sp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button"));
+            Image buttonImage = btn.GetComponent<Image>();
+            buttonImage.sprite = sp;
             //btn.image.color = changedColor;
             OpenButtonAudio.Play();
         }
