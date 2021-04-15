@@ -12,9 +12,12 @@ public class SampleText : MonoBehaviour
     private string sampletext = "どこか遠くで、カモメの声が聞こえる。";
     private Queue<char> _charQueue;
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
-        StartCoroutine(MakeLoop());
+        text.text = "";
+        _charQueue = SeparateString(sampletext);
+        yield return new WaitForSeconds(2.0f);
+        StartCoroutine(ShowChars(captionSpeed));
     }
 
     // Update is called once per frame
@@ -30,19 +33,13 @@ public class SampleText : MonoBehaviour
 
     private IEnumerator MakeLoop()
     {
-        while (true)
-        {
-            ReadText();
-            yield return new WaitForSeconds(wait);
-        }
-    }
-
-    private void ReadText()
-    {
         text.text = "";
         _charQueue = SeparateString(sampletext);
+        yield return new WaitForSeconds(0.03f);
         StartCoroutine(ShowChars(captionSpeed));
     }
+
+    
     private Queue<char> SeparateString(string str)
     {
         // 文字列をchar型の配列にする = 1文字ごとに区切る

@@ -105,6 +105,7 @@ public class GameController : MonoBehaviour
     private List<GameObject> charaObjects = new List<GameObject>();
     public int sc = 0;
     public bool isLoad = false;
+    
 
 
     // パラメーターを変更
@@ -308,13 +309,13 @@ public class GameController : MonoBehaviour
         if (isAuto)
         {
             isAuto = false;
-            btn.image.color = defaultColor;
+            //btn.image.color = defaultColor;
             CloseButtonAudio.Play();
         }
         else
         {
             isAuto = true;
-            btn.image.color = changedColor;
+            //btn.image.color = changedColor;
             OpenButtonAudio.Play();
         }
         if (isAuto)
@@ -331,8 +332,9 @@ public class GameController : MonoBehaviour
     {
         while (isAuto)
         {
-            OnClick();
+            yield return new WaitForSeconds(_charQueue.Count * captionSpeed);
             yield return new WaitForSeconds(waitTime);
+            OnClick();
         }
     }
 
@@ -342,13 +344,13 @@ public class GameController : MonoBehaviour
         if (isSkip)
         {
             isSkip = false;
-            btn.image.color = defaultColor;
+            //btn.image.color = defaultColor;
             CloseButtonAudio.Play();
         }
         else
         {
             isSkip = true;
-            btn.image.color = changedColor;
+            //btn.image.color = changedColor;
             OpenButtonAudio.Play();
         }
         if (isSkip)

@@ -19,22 +19,11 @@ public class AutoSpeedSlider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameController.captionSpeed == 0.08f)
-        {
-            if (gameController.waitTime < 5.5f - slider.value + 0.8f)
-            {
-                gameController.waitTime += 0.8f;
-            }
-        }
-        else
-        {
-            gameController.waitTime = 5.5f - slider.value;
-        }
+        
     }
     public void ChangeSlider()
     {    
-        gameController.waitTime = 5.5f - slider.value;
-        sampleText.wait = 5.5f - slider.value;
-        sampleText.CallLoop();
+        gameController.waitTime = 4.0f - slider.value;
+        sampleText.wait = 4.0f - slider.value;
     }
 }
