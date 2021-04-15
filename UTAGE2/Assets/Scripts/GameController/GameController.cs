@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour
     public AudioSource CloseButtonAudio;
 
     [SerializeField]
-    public float captionSpeed = 0.05f;
+    public float captionSpeed = 0.2f;
     private const float CELLHEIGHT = 110.0f;
 
     // パラメーターを追加
@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
     private IEnumerator autoButtonCoroutine;
     public float skipTime = 0.5f;
     private IEnumerator skipButtonCoroutine;
-    private string defaultColorCode = "#43FFFE";
+    private string defaultColorCode = "#67fcff";
     private string changedColorCode = "#7aFF7a";
     private Color defaultColor;
     private Color changedColor;
@@ -105,6 +105,9 @@ public class GameController : MonoBehaviour
     private List<GameObject> charaObjects = new List<GameObject>();
     public int sc = 0;
     public bool isLoad = false;
+    private GameObject currentObject;
+    private string main;
+    
 
 
     // パラメーターを変更
@@ -152,7 +155,7 @@ public class GameController : MonoBehaviour
         {
             name = ts[0];
         }
-        string main = ts[1].Remove(ts[1].LastIndexOf(SEPARATE_MAIN_END));
+        main = ts[1].Remove(ts[1].LastIndexOf(SEPARATE_MAIN_END));
         nameText.text = name;
         mainText.text = "";
         _charQueue = SeparateString(main);
@@ -208,7 +211,7 @@ public class GameController : MonoBehaviour
         {
             if (!ShowNextPage())
             {
-
+                
             }
             // UnityエディタのPlayモードを終了する
 
@@ -308,13 +311,19 @@ public class GameController : MonoBehaviour
         if (isAuto)
         {
             isAuto = false;
-            btn.image.color = defaultColor;
+            Sprite sp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+            Image buttonImage = btn.GetComponent<Image>();
+            buttonImage.sprite = sp;
+            //btn.image.color = defaultColor;
             CloseButtonAudio.Play();
         }
         else
         {
             isAuto = true;
-            btn.image.color = changedColor;
+            Sprite sp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button"));
+            Image buttonImage = btn.GetComponent<Image>();
+            buttonImage.sprite = sp;
+            //btn.image.color = changedColor;
             OpenButtonAudio.Play();
         }
         if (isAuto)
@@ -329,9 +338,9 @@ public class GameController : MonoBehaviour
 
     IEnumerator AutoMessage()
     {
-        OnClick();
         while (isAuto)
         {
+            yield return new WaitForSeconds(_charQueue.Count * captionSpeed);
             yield return new WaitForSeconds(waitTime);
             OnClick();
         }
@@ -343,13 +352,19 @@ public class GameController : MonoBehaviour
         if (isSkip)
         {
             isSkip = false;
-            btn.image.color = defaultColor;
+            Sprite sp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+            Image buttonImage = btn.GetComponent<Image>();
+            buttonImage.sprite = sp;
+            //btn.image.color = defaultColor;
             CloseButtonAudio.Play();
         }
         else
         {
             isSkip = true;
-            btn.image.color = changedColor;
+            Sprite sp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button"));
+            Image buttonImage = btn.GetComponent<Image>();
+            buttonImage.sprite = sp;
+            //btn.image.color = changedColor;
             OpenButtonAudio.Play();
         }
         if (isSkip)
@@ -484,14 +499,23 @@ public class GameController : MonoBehaviour
     }
     private void ViewLoadPanel()
     {
+        if (ScenarioPanel.activeSelf)
+        {
+            currentObject = ScenarioPanel;
+        }
+        else
+        {
+            currentObject = TitlePanel;
+        }
         loadPanel.SetActive(true);
         ScenarioPanel.SetActive(false);
+        TitlePanel.SetActive(false);
         OpenButtonAudio.Play();
     }
     private void CloseLoadPanel()
     {
         loadPanel.SetActive(false);
-        ScenarioPanel.SetActive(true);
+        currentObject.SetActive(true);
         CloseButtonAudio.Play();
     }
     private void ViewTitlePanel()
@@ -506,15 +530,29 @@ public class GameController : MonoBehaviour
     }
     private void ViewConfigPanel()
     {
+        if (ScenarioPanel.activeSelf)
+        {
+            currentObject = ScenarioPanel;
+        }
+        else
+        {
+            currentObject = TitlePanel;
+        }
         ConfigPanel.SetActive(true);
+        TitlePanel.SetActive(false);
         ScenarioPanel.SetActive(false);
         OpenButtonAudio.Play();
     }
     private void CloseConfigPanel()
     {
         ConfigPanel.SetActive(false);
-        ScenarioPanel.SetActive(true);
+        currentObject.SetActive(true);
         CloseButtonAudio.Play();
+    }
+
+    private void PushCloseButton()
+    {
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 
     /**
