@@ -106,6 +106,7 @@ public class GameController : MonoBehaviour
     public int sc = 0;
     public bool isLoad = false;
     private GameObject currentObject;
+    private string main;
     
 
 
@@ -154,7 +155,7 @@ public class GameController : MonoBehaviour
         {
             name = ts[0];
         }
-        string main = ts[1].Remove(ts[1].LastIndexOf(SEPARATE_MAIN_END));
+        main = ts[1].Remove(ts[1].LastIndexOf(SEPARATE_MAIN_END));
         nameText.text = name;
         mainText.text = "";
         _charQueue = SeparateString(main);

@@ -11,7 +11,7 @@ public class VOICEVolumeSlider : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        slider.value = 1.0f;
+        slider.value = 0.5f;
     }
 
     // Update is called once per frame

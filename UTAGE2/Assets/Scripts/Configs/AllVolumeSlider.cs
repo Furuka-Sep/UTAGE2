@@ -16,7 +16,7 @@ public class AllVolumeSlider : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AllSlider.value = 1.0f;
+        AllSlider.value = 0.5f;
     }
     void Update()
     {
