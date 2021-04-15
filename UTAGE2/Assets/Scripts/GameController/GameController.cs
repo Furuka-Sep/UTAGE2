@@ -105,6 +105,7 @@ public class GameController : MonoBehaviour
     private List<GameObject> charaObjects = new List<GameObject>();
     public int sc = 0;
     public bool isLoad = false;
+    private GameObject currentObject;
     
 
 
@@ -209,7 +210,7 @@ public class GameController : MonoBehaviour
         {
             if (!ShowNextPage())
             {
-
+                
             }
             // UnityエディタのPlayモードを終了する
 
@@ -497,14 +498,23 @@ public class GameController : MonoBehaviour
     }
     private void ViewLoadPanel()
     {
+        if (ScenarioPanel.activeSelf)
+        {
+            currentObject = ScenarioPanel;
+        }
+        else
+        {
+            currentObject = TitlePanel;
+        }
         loadPanel.SetActive(true);
         ScenarioPanel.SetActive(false);
+        TitlePanel.SetActive(false);
         OpenButtonAudio.Play();
     }
     private void CloseLoadPanel()
     {
         loadPanel.SetActive(false);
-        ScenarioPanel.SetActive(true);
+        currentObject.SetActive(true);
         CloseButtonAudio.Play();
     }
     private void ViewTitlePanel()
@@ -519,15 +529,29 @@ public class GameController : MonoBehaviour
     }
     private void ViewConfigPanel()
     {
+        if (ScenarioPanel.activeSelf)
+        {
+            currentObject = ScenarioPanel;
+        }
+        else
+        {
+            currentObject = TitlePanel;
+        }
         ConfigPanel.SetActive(true);
+        TitlePanel.SetActive(false);
         ScenarioPanel.SetActive(false);
         OpenButtonAudio.Play();
     }
     private void CloseConfigPanel()
     {
         ConfigPanel.SetActive(false);
-        ScenarioPanel.SetActive(true);
+        currentObject.SetActive(true);
         CloseButtonAudio.Play();
+    }
+
+    private void PushCloseButton()
+    {
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 
     /**
