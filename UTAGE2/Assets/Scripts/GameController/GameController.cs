@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
     public GameObject ScenarioPanel;
     public GameObject TitlePanel;
     public GameObject ConfigPanel;
-
+    public GameObject TitleConfirmPanel;
     public AudioSource OpenButtonAudio;
     public AudioSource CloseButtonAudio;
 
@@ -107,6 +107,7 @@ public class GameController : MonoBehaviour
     public bool isLoad = false;
     private GameObject currentObject;
     private string main;
+    private bool isFinish=false;
     
 
 
@@ -211,7 +212,18 @@ public class GameController : MonoBehaviour
         {
             if (!ShowNextPage())
             {
-                
+                isFinish = true;
+                GameObject mainWindow = mainText.transform.parent.gameObject;
+                GameObject nameWindow = nameText.transform.parent.gameObject;
+                mainWindow.SetActive(false);
+                nameWindow.SetActive(false);
+                log.SetActive(false);
+                close.SetActive(false);
+                auto.SetActive(false);
+                skip.SetActive(false);
+                qLoad.SetActive(false);
+                qSave.SetActive(false);
+                menu.SetActive(false);
             }
             // UnityエディタのPlayモードを終了する
 
@@ -229,6 +241,17 @@ public class GameController : MonoBehaviour
             {
                 OnClickRight();
             }
+        }
+        if (isFinish)
+        {
+            
+            if (Input.GetMouseButtonDown(0))
+            {
+                ScenarioPanel.SetActive(false);
+                TitlePanel.SetActive(true);
+                isFinish = false;
+            }
+
         }
     }
 
@@ -552,7 +575,18 @@ public class GameController : MonoBehaviour
 
     private void PushCloseButton()
     {
+        // UnityEditor.EditorApplication.isPlaying = false;
+        TitleConfirmPanel.SetActive(true);
+    }
+
+    private void GameClose()
+    {
         UnityEditor.EditorApplication.isPlaying = false;
+    }
+
+    private void GameCloseCansel()
+    {
+        TitleConfirmPanel.SetActive(false);
     }
 
     /**
