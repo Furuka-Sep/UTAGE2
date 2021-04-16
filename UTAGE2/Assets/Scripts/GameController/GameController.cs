@@ -218,6 +218,8 @@ public class GameController : MonoBehaviour
         {
             if (!ShowNextPage())
             {
+                isAuto = false;
+                isSkip = false;
                 isFinish = true;
                 GameObject mainWindow = mainText.transform.parent.gameObject;
                 GameObject nameWindow = nameText.transform.parent.gameObject;
@@ -278,6 +280,17 @@ public class GameController : MonoBehaviour
 */
     private void Init()
     {
+        GameObject mainWindow = mainText.transform.parent.gameObject;
+        GameObject nameWindow = nameText.transform.parent.gameObject;
+        mainWindow.SetActive(true);
+        nameWindow.SetActive(true);
+        log.SetActive(true);
+        close.SetActive(true);
+        auto.SetActive(true);
+        skip.SetActive(true);
+        qLoad.SetActive(true);
+        qSave.SetActive(true);
+        menu.SetActive(true);
         _pageQueue = SeparateString(_text, SEPARATE_PAGE);
 
         
