@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor;
+using System.IO;
 
 
 // MonoBehaviourを継承することでオブジェクトにコンポーネントとして
@@ -115,6 +117,9 @@ public class GameController : MonoBehaviour
 
     // パラメーターを変更
     private string _text = "";
+    private Text text1;
+    private Text text2;
+    private Image image1;
 
     // メソッドを変更
     private void Start()
@@ -753,5 +758,26 @@ public class GameController : MonoBehaviour
         isLoad = false;
         Init();
     }
-  
+    public void Nsave()
+    {
+        AssetDatabase.Refresh();
+        Debug.Log("SL:" + CTRL.SaveSlotNo);
+        //日付ページ番号保存
+        this.text1 = GameObject.Find("Time&Chapter" + CTRL.SaveSlotNo).GetComponent<Text>(); // textコンポーネント
+        this.text1.text = "page:" + sc + "  " + System.DateTime.Now.ToString("yyyy/MM/dd/HH:mm");// <---- 追加4
+        PlayerPrefs.SetInt("Page" + CTRL.SaveSlotNo, sc);
+        this.text2 = GameObject.Find("saveText" + CTRL.SaveSlotNo).GetComponent<Text>(); // textコンポーネント
+        this.text2.text = main;
+        PlayerPrefs.SetInt("Nsave_saveText" + CTRL.SaveSlotNo, sc);
+        File.Copy("Assets/Resources/SaveThumbnails/screenshottmp.png", "Assets/Resources/SaveThumbnails/screenshot" + CTRL.SaveSlotNo + ".png", true);
+        //保存対象のオブジェクトを指定
+        this.image1 = GameObject.Find("saveThumbnail" + CTRL.SaveSlotNo).GetComponent<Image>(); // Imageコンポーネント
+        Debug.Log(this.image1.name);
+        Sprite image1 = Resources.Load<Sprite>("Assets/Resources/SaveThumbnails/screenshot" + CTRL.SaveSlotNo);
+        AssetDatabase.Refresh();
+    }
+    public void SaveThumbnailimage()
+    {
+        ScreenCapture.CaptureScreenshot("Assets/Resources/SaveThumbnails/screenshottmp.png");
+    }
 }
