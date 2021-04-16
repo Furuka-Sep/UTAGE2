@@ -108,7 +108,7 @@ public class GameController : MonoBehaviour
     private GameObject currentObject;
     private string main;
     private bool isFinish=false;
-    
+
 
 
     // パラメーターを変更
@@ -268,9 +268,9 @@ public class GameController : MonoBehaviour
 */
     private void Init()
     {
-
         _pageQueue = SeparateString(_text, SEPARATE_PAGE);
 
+        
         if (isLoad == true)
         {
             int sc2 = PlayerPrefs.GetInt("Qsave");
@@ -283,7 +283,10 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            ShowNextPage();
+            while (sc <= 0)
+            {
+                ShowNextPage();
+            }
         }
 
     }
@@ -688,6 +691,7 @@ public class GameController : MonoBehaviour
         audio.volume = volume;
     }
 
+
     public void Qsave()
     {
         PlayerPrefs.SetInt("Qsave", sc);
@@ -701,6 +705,16 @@ public class GameController : MonoBehaviour
         isLoad = true;
         Init();
         OpenButtonAudio.Play();
+    }
+
+    private void NewGame()
+    {
+        sc = 0;
+        menuPanel.SetActive(false);
+        TitlePanel.SetActive(false);
+        ScenarioPanel.SetActive(true);
+        isLoad = false;
+        Init();
     }
   
 }

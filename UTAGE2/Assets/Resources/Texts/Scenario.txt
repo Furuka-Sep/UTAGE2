@@ -7,6 +7,7 @@
 !charaimg_pos="right"="200,0,0"
 !charaimg_active="left"="true"
 !charaimg_active="right"="true"
+!charaimg_active="center"="false"
 !bgm_sound="bgm1"!bgm_loop="true"
 !bgm_play=""
 !bgm_fade="5,1"
