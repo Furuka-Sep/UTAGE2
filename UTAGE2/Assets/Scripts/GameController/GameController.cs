@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour
     public AudioSource OpenButtonAudio;
     public AudioSource CloseButtonAudio;
     public GameObject TitleBG;
+    public Slider BGMSlider;
 
     [SerializeField]
     public float captionSpeed = 0.2f;
@@ -127,8 +128,6 @@ public class GameController : MonoBehaviour
         charaObjects.Add(leftChar);
         charaObjects.Add(centerChar);
         charaObjects.Add(rightChar);
-        autoButtonCoroutine = AutoMessage();
-        skipButtonCoroutine = SkipMessage();
         
         Image titleImage = TitleBG.GetComponent<Image>();
         titleImage.sprite= Instantiate(Resources.Load<Sprite>("TitleResources/titleImage"));
@@ -137,6 +136,7 @@ public class GameController : MonoBehaviour
         CloseButtonAudio.clip = LoadAudioClip("closeButton");
         bgmAudioSource.clip = LoadTitleAudioClip();
         bgmAudioSource.Play();
+        bgmAudioSource.volume = 1 * BGMSlider.value;
         bgmAudioSource.loop = true;
         TextAsset textAsset = new TextAsset();
         textAsset = Resources.Load("Texts/Scenario", typeof(TextAsset)) as TextAsset;
@@ -262,10 +262,18 @@ public class GameController : MonoBehaviour
             {
                 ScenarioPanel.SetActive(false);
                 TitlePanel.SetActive(true);
+                Button autobtn = auto.GetComponent<Button>();
+                Sprite autosp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+                Image autobuttonImage = autobtn.GetComponent<Image>();
+                Button skipbtn = skip.GetComponent<Button>();
+                Sprite skipsp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+                Image skipbuttonImage = skipbtn.GetComponent<Image>();
+                skipbuttonImage.sprite = skipsp;
+                autobuttonImage.sprite = autosp;
                 isFinish = false;
                 bgmAudioSource.clip = LoadTitleAudioClip();
                 bgmAudioSource.Play();
-                bgmAudioSource.volume = 0.5f;
+                bgmAudioSource.volume = 1 * BGMSlider.value;
                 bgmAudioSource.loop = true;
             }
 
@@ -287,6 +295,8 @@ public class GameController : MonoBehaviour
     {
         GameObject mainWindow = mainText.transform.parent.gameObject;
         GameObject nameWindow = nameText.transform.parent.gameObject;
+        autoButtonCoroutine = AutoMessage();
+        skipButtonCoroutine = SkipMessage();
         mainWindow.SetActive(true);
         nameWindow.SetActive(true);
         log.SetActive(true);
@@ -586,6 +596,7 @@ public class GameController : MonoBehaviour
         ScenarioPanel.SetActive(false);
         bgmAudioSource.clip = LoadTitleAudioClip();
         bgmAudioSource.Play();
+        bgmAudioSource.volume = 1 * BGMSlider.value;
         bgmAudioSource.loop = true;
     }
     private void CloseTitlePanel()
@@ -677,7 +688,7 @@ public class GameController : MonoBehaviour
                 audio.clip = LoadAudioClip(parameter);
                 break;
             case COMMAND_VOLUME:
-                audio.volume = float.Parse(parameter);
+                audio.volume = float.Parse(parameter) * BGMSlider.value;
                 break;
             case COMMAND_PRIORITY:
                 audio.priority = int.Parse(parameter);
