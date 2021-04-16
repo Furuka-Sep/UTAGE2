@@ -108,6 +108,7 @@ public class GameController : MonoBehaviour
     private GameObject currentObject;
     private string main;
     private bool isFinish=false;
+    private bool isLoading = false;
 
 
 
@@ -275,10 +276,15 @@ public class GameController : MonoBehaviour
         {
             int sc2 = PlayerPrefs.GetInt("Qsave");
             Debug.Log("ロードしました　ページ番号" + sc2);
+            isLoading = true;
             while (sc < sc2)
             {
 
                 ShowNextPage();
+                if (sc == sc2 - 1)
+                {
+                    isLoading = false;
+                }
             }
         }
         else
@@ -432,7 +438,10 @@ public class GameController : MonoBehaviour
             if (cmds[0].Contains(COMMAND_BGM))
                 SetBackgroundMusic(cmds[0], cmds[1]);
             if (cmds[0].Contains(COMMAND_SE))
-                SetSoundEffect(cmds[1], cmds[0], cmds[2]);
+                if (!isLoading)
+                {
+                    SetSoundEffect(cmds[1], cmds[0], cmds[2]);
+                }
         }
     }
 
