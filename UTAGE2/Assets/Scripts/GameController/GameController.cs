@@ -36,6 +36,7 @@ public class GameController : MonoBehaviour
     public GameObject TitleConfirmPanel;
     public AudioSource OpenButtonAudio;
     public AudioSource CloseButtonAudio;
+    public GameObject TitleBG;
 
     [SerializeField]
     public float captionSpeed = 0.2f;
@@ -123,16 +124,20 @@ public class GameController : MonoBehaviour
         charaObjects.Add(rightChar);
         autoButtonCoroutine = AutoMessage();
         skipButtonCoroutine = SkipMessage();
-        ColorUtility.TryParseHtmlString(defaultColorCode, out defaultColor);
-        ColorUtility.TryParseHtmlString(changedColorCode, out changedColor);
+        
+        Image titleImage = TitleBG.GetComponent<Image>();
+        titleImage.sprite= Instantiate(Resources.Load<Sprite>("TitleResources/titleImage"));
+        
         OpenButtonAudio.clip = LoadAudioClip("openButton");
         CloseButtonAudio.clip = LoadAudioClip("closeButton");
+        bgmAudioSource.clip = LoadTitleAudioClip();
+        bgmAudioSource.Play();
+        bgmAudioSource.loop = true;
         TextAsset textAsset = new TextAsset();
         textAsset = Resources.Load("Texts/Scenario", typeof(TextAsset)) as TextAsset;
         string textLine = textAsset.text;
         splitText = textLine.Split(char.Parse("\n"));
         _text = string.Join("", splitText);
-        Init();
     }
 
     /**
@@ -251,6 +256,10 @@ public class GameController : MonoBehaviour
                 ScenarioPanel.SetActive(false);
                 TitlePanel.SetActive(true);
                 isFinish = false;
+                bgmAudioSource.clip = LoadTitleAudioClip();
+                bgmAudioSource.Play();
+                bgmAudioSource.volume = 0.5f;
+                bgmAudioSource.loop = true;
             }
 
         }
@@ -557,6 +566,9 @@ public class GameController : MonoBehaviour
     {
         TitlePanel.SetActive(true);
         ScenarioPanel.SetActive(false);
+        bgmAudioSource.clip = LoadTitleAudioClip();
+        bgmAudioSource.Play();
+        bgmAudioSource.loop = true;
     }
     private void CloseTitlePanel()
     {
@@ -675,7 +687,10 @@ public class GameController : MonoBehaviour
     {
         return Instantiate(Resources.Load<AudioClip>(audioClipsDirectory + name));
     }
-
+    private AudioClip LoadTitleAudioClip()
+    {
+        return Instantiate(Resources.Load<AudioClip>("TitleResources/titleBGM"));
+    }
     /**
      * 音声にフェードをかける
      */
