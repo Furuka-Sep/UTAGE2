@@ -126,6 +126,7 @@ public class GameController : MonoBehaviour
     private string main;
     private bool isFinish = false;
     private bool isLoading = false;
+    public int NLoadslot = 0;
 
 
 
@@ -831,20 +832,43 @@ public class GameController : MonoBehaviour
     public void Nsave()
     {
         AssetDatabase.Refresh();
-        Debug.Log("SL:" + CTRL.SaveSlotNo);
         //日付ページ番号保存
         this.text1 = GameObject.Find("Time&Chapter" + CTRL.SaveSlotNo).GetComponent<Text>(); // textコンポーネント
         this.text1.text = "page:" + sc + "  " + System.DateTime.Now.ToString("yyyy/MM/dd/HH:mm");// <---- 追加4
+        PlayerPrefs.SetString("Savedatadate" + CTRL.SaveSlotNo, this.text1.text);
         PlayerPrefs.SetInt("Page" + CTRL.SaveSlotNo, sc);
         this.text2 = GameObject.Find("saveText" + CTRL.SaveSlotNo).GetComponent<Text>(); // textコンポーネント
         this.text2.text = main;
-        PlayerPrefs.SetInt("Nsave_saveText" + CTRL.SaveSlotNo, sc);
+        PlayerPrefs.SetString("Savedatatext" + CTRL.SaveSlotNo, this.text2.text);
+        //PlayerPrefs.SetInt("Nsave_saveText" + CTRL.SaveSlotNo, sc);
         File.Copy("Assets/Resources/SaveThumbnails/screenshottmp.png", "Assets/Resources/SaveThumbnails/screenshot" + CTRL.SaveSlotNo + ".png", true);
         //保存対象のオブジェクトを指定
         this.image1 = GameObject.Find("saveThumbnail" + CTRL.SaveSlotNo).GetComponent<Image>(); // Imageコンポーネント
         Debug.Log(this.image1.name);
         Sprite image1 = Resources.Load<Sprite>("Assets/Resources/SaveThumbnails/screenshot" + CTRL.SaveSlotNo);
         AssetDatabase.Refresh();
+    }
+    public void Nload()
+    {
+        sc = 0;
+        isLoad = true;
+        NLoadslot = CTRL.SaveSlotNo;
+        Debug.Log("セーブスロット" + NLoadslot + "にセーブしました");
+        Init();
+        OpenButtonAudio.Play();
+    }
+    public void autoload()
+    {
+        for (int i = 1; i < 6; i++)
+        {
+            this.text1 = GameObject.Find("Time&Chapter" + i).GetComponent<Text>(); // textコンポーネント
+            this.text2 = GameObject.Find("saveText" + i).GetComponent<Text>(); // textコンポーネント
+            if (this.text1 != null)
+            {
+                text1.text = PlayerPrefs.GetString("Savedatadate" + i);
+                text2.text = PlayerPrefs.GetString("Savedatatext" + i);
+            }
+        }
     }
     public void SaveThumbnailimage()
     {
