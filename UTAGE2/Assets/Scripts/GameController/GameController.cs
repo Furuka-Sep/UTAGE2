@@ -630,18 +630,6 @@ public class GameController : MonoBehaviour
     }
     private void ViewSavePanel()
     {
-        savePanel.SetActive(true);
-        ScenarioPanel.SetActive(false);
-        OpenButtonAudio.Play();
-    }
-    private void CloseSavePanel()
-    {
-        savePanel.SetActive(false);
-        ScenarioPanel.SetActive(true);
-        CloseButtonAudio.Play();
-    }
-    private void ViewLoadPanel()
-    {
         if (ScenarioPanel.activeSelf)
         {
             currentObject = ScenarioPanel;
@@ -650,14 +638,14 @@ public class GameController : MonoBehaviour
         {
             currentObject = TitlePanel;
         }
-        loadPanel.SetActive(true);
+        savePanel.SetActive(true);
         ScenarioPanel.SetActive(false);
         TitlePanel.SetActive(false);
         OpenButtonAudio.Play();
     }
-    private void CloseLoadPanel()
+    private void CloseSavePanel()
     {
-        loadPanel.SetActive(false);
+        savePanel.SetActive(false);
         currentObject.SetActive(true);
         CloseButtonAudio.Play();
     }
