@@ -204,9 +204,8 @@ none「おじいさんとおばあさんが桃を食べようと桃を切って�
 
 
 #END&
-none「めでたし、めでたし」
+ 「めでたし、めでたし」
 &!background_sprite="fin"
 &!charaimg_active="center"="false"
 !charaimg_active="right"="flase"
 !charaimg_active="left"="flase"
-&none「めでたし、めでたし」
