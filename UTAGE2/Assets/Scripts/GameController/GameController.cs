@@ -42,6 +42,7 @@ public class GameController : MonoBehaviour
     public AudioSource CloseButtonAudio;
     public GameObject TitleBG;
     public Slider BGMSlider;
+    public GameObject choicePanel;
 
     [SerializeField]
     public float captionSpeed = 0.2f;
@@ -383,6 +384,16 @@ public class GameController : MonoBehaviour
         qLoad.SetActive(mainWindow.activeSelf);
         qSave.SetActive(mainWindow.activeSelf);
         menu.SetActive(mainWindow.activeSelf);
+        isAuto = false;
+        isSkip = false;
+        Button autobtn = auto.GetComponent<Button>();
+        Sprite autosp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image autobuttonImage = autobtn.GetComponent<Image>();
+        Button skipbtn = skip.GetComponent<Button>();
+        Sprite skipsp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image skipbuttonImage = skipbtn.GetComponent<Image>();
+        skipbuttonImage.sprite = skipsp;
+        autobuttonImage.sprite = autosp;
         if (isHide)
         {
             isHide = false;
@@ -505,7 +516,20 @@ public class GameController : MonoBehaviour
             if (cmds[0].Contains(COMMAND_JUMP))
                 JumpTo(cmds[1]);
             if (cmds[0].Contains(COMMAND_SELECT))
+            {
                 SetSelectButton(cmds[1], cmds[0], cmds[2]);
+                choicePanel.SetActive(true);
+                isAuto = false;
+                isSkip = false;
+                Button autobtn = auto.GetComponent<Button>();
+                Sprite autosp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+                Image autobuttonImage = autobtn.GetComponent<Image>();
+                Button skipbtn = skip.GetComponent<Button>();
+                Sprite skipsp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+                Image skipbuttonImage = skipbtn.GetComponent<Image>();
+                skipbuttonImage.sprite = skipsp;
+                autobuttonImage.sprite = autosp;
+            }
         }
     }
 
@@ -568,6 +592,16 @@ public class GameController : MonoBehaviour
     {
         BackLog.SetActive(true);
         OpenButtonAudio.Play();
+        isAuto = false;
+        isSkip = false;
+        Button autobtn = auto.GetComponent<Button>();
+        Sprite autosp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image autobuttonImage = autobtn.GetComponent<Image>();
+        Button skipbtn = skip.GetComponent<Button>();
+        Sprite skipsp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image skipbuttonImage = skipbtn.GetComponent<Image>();
+        skipbuttonImage.sprite = skipsp;
+        autobuttonImage.sprite = autosp;
     }
     private void CloseLog()
     {
@@ -578,6 +612,16 @@ public class GameController : MonoBehaviour
     {
         menuPanel.SetActive(true);
         OpenButtonAudio.Play();
+        isAuto = false;
+        isSkip = false;
+        Button autobtn = auto.GetComponent<Button>();
+        Sprite autosp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image autobuttonImage = autobtn.GetComponent<Image>();
+        Button skipbtn = skip.GetComponent<Button>();
+        Sprite skipsp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image skipbuttonImage = skipbtn.GetComponent<Image>();
+        skipbuttonImage.sprite = skipsp;
+        autobuttonImage.sprite = autosp;
     }
     private void CloseMenuPanel()
     {
@@ -858,6 +902,7 @@ public class GameController : MonoBehaviour
         foreach (Button button in _selectButtonList) Destroy(button.gameObject);
         _selectButtonList.Clear();
         JumpTo('"' + label + '"');
+        choicePanel.SetActive(false);
         ShowNextPage();
     }
 }

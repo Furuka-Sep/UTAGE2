@@ -4764,6 +4764,7 @@ MonoBehaviour:
   CloseButtonAudio: {fileID: 2077137276}
   TitleBG: {fileID: 1959083074}
   BGMSlider: {fileID: 1388068127}
+  choicePanel: {fileID: 619187006}
   captionSpeed: 0.05
   waitTime: 3
   skipTime: 0.1
@@ -5267,7 +5268,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &619187007
 RectTransform:
   m_ObjectHideFlags: 0
