@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEditor;
 using System.IO;
+using System.Linq;
+using UnityEngine.SceneManagement;
 
 
 // MonoBehaviourを継承することでオブジェクトにコンポーネントとして
@@ -40,12 +42,14 @@ public class GameController : MonoBehaviour
     public AudioSource CloseButtonAudio;
     public GameObject TitleBG;
     public Slider BGMSlider;
+    public GameObject choicePanel;
 
     [SerializeField]
     public float captionSpeed = 0.2f;
     private const float CELLHEIGHT = 110.0f;
 
     // パラメーターを追加
+    private const char SEPARATE_SUBSCENE = '#';
     private const char SEPARATE_MAIN_START = '「';
     private const char SEPARATE_MAIN_END = '」';
     private Queue<char> _charQueue;
@@ -80,6 +84,10 @@ public class GameController : MonoBehaviour
     private const string COMMAND_PRIORITY = "_priority";
     private const string COMMAND_LOOP = "_loop";
     private const string COMMAND_FADE = "_fade";
+    private const string COMMAND_JUMP = "jump_to";
+    private const string COMMAND_SELECT = "select";
+    private const string COMMAND_TEXT = "_text";
+    private const string SELECT_BUTTON_PREFAB = "choiceButton";
 
     private const string SE_AUDIOSOURCE_PREFAB = "SEAudioSource";
 
@@ -102,16 +110,21 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GameObject seAudioSources;
     private List<AudioSource> _seList = new List<AudioSource>();
+    [SerializeField]
+    private GameObject selectButtons;
+    private List<Button> _selectButtonList = new List<Button>();
 
     private List<Image> _charaImageList = new List<Image>();
     private Dictionary<string, GameObject> _charaImageMap = new Dictionary<string, GameObject>();
     private List<string> posStrings = new List<string>() { "left", "center", "right" };
     private List<GameObject> charaObjects = new List<GameObject>();
+    private Dictionary<string, Queue<string>> _subScenes = new Dictionary<string, Queue<string>>();
+
     public int sc = 0;
     public bool isLoad = false;
     private GameObject currentObject;
     private string main;
-    private bool isFinish=false;
+    private bool isFinish = false;
     private bool isLoading = false;
 
 
@@ -128,10 +141,10 @@ public class GameController : MonoBehaviour
         charaObjects.Add(leftChar);
         charaObjects.Add(centerChar);
         charaObjects.Add(rightChar);
-        
+
         Image titleImage = TitleBG.GetComponent<Image>();
-        titleImage.sprite= Instantiate(Resources.Load<Sprite>("TitleResources/titleImage"));
-        
+        titleImage.sprite = Instantiate(Resources.Load<Sprite>("TitleResources/titleImage"));
+
         OpenButtonAudio.clip = LoadAudioClip("openButton");
         CloseButtonAudio.clip = LoadAudioClip("closeButton");
         bgmAudioSource.clip = LoadTitleAudioClip();
@@ -154,6 +167,7 @@ public class GameController : MonoBehaviour
         if (text[0].Equals(SEPARATE_COMMAND))
         {
             ReadCommand(text);
+            if (_selectButtonList.Count > 0) return;
             ShowNextPage();
             return;
         }
@@ -237,6 +251,7 @@ public class GameController : MonoBehaviour
                 qLoad.SetActive(false);
                 qSave.SetActive(false);
                 menu.SetActive(false);
+                //EditorApplication.isPlaying = false;
             }
             // UnityエディタのPlayモードを終了する
 
@@ -257,7 +272,7 @@ public class GameController : MonoBehaviour
         }
         if (isFinish)
         {
-            
+
             if (Input.GetMouseButtonDown(0))
             {
                 ScenarioPanel.SetActive(false);
@@ -308,7 +323,7 @@ public class GameController : MonoBehaviour
         menu.SetActive(true);
         _pageQueue = SeparateString(_text, SEPARATE_PAGE);
 
-        
+
         if (isLoad == true)
         {
             int sc2 = PlayerPrefs.GetInt("Qsave");
@@ -326,6 +341,13 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            Queue<string> subScenes = SeparateString(_text, SEPARATE_SUBSCENE);
+            foreach (string subScene in subScenes)
+            {
+                if (subScene.Equals("")) continue;
+                Queue<string> pages = SeparateString(subScene, SEPARATE_PAGE);
+                _subScenes[pages.Dequeue()] = pages;
+            }
             while (sc <= 0)
             {
                 ShowNextPage();
@@ -362,6 +384,16 @@ public class GameController : MonoBehaviour
         qLoad.SetActive(mainWindow.activeSelf);
         qSave.SetActive(mainWindow.activeSelf);
         menu.SetActive(mainWindow.activeSelf);
+        isAuto = false;
+        isSkip = false;
+        Button autobtn = auto.GetComponent<Button>();
+        Sprite autosp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image autobuttonImage = autobtn.GetComponent<Image>();
+        Button skipbtn = skip.GetComponent<Button>();
+        Sprite skipsp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image skipbuttonImage = skipbtn.GetComponent<Image>();
+        skipbuttonImage.sprite = skipsp;
+        autobuttonImage.sprite = autosp;
         if (isHide)
         {
             isHide = false;
@@ -475,10 +507,29 @@ public class GameController : MonoBehaviour
             if (cmds[0].Contains(COMMAND_BGM))
                 SetBackgroundMusic(cmds[0], cmds[1]);
             if (cmds[0].Contains(COMMAND_SE))
+            {
                 if (!isLoading)
                 {
                     SetSoundEffect(cmds[1], cmds[0], cmds[2]);
                 }
+            }
+            if (cmds[0].Contains(COMMAND_JUMP))
+                JumpTo(cmds[1]);
+            if (cmds[0].Contains(COMMAND_SELECT))
+            {
+                SetSelectButton(cmds[1], cmds[0], cmds[2]);
+                choicePanel.SetActive(true);
+                isAuto = false;
+                isSkip = false;
+                Button autobtn = auto.GetComponent<Button>();
+                Sprite autosp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+                Image autobuttonImage = autobtn.GetComponent<Image>();
+                Button skipbtn = skip.GetComponent<Button>();
+                Sprite skipsp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+                Image skipbuttonImage = skipbtn.GetComponent<Image>();
+                skipbuttonImage.sprite = skipsp;
+                autobuttonImage.sprite = autosp;
+            }
         }
     }
 
@@ -541,6 +592,16 @@ public class GameController : MonoBehaviour
     {
         BackLog.SetActive(true);
         OpenButtonAudio.Play();
+        isAuto = false;
+        isSkip = false;
+        Button autobtn = auto.GetComponent<Button>();
+        Sprite autosp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image autobuttonImage = autobtn.GetComponent<Image>();
+        Button skipbtn = skip.GetComponent<Button>();
+        Sprite skipsp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image skipbuttonImage = skipbtn.GetComponent<Image>();
+        skipbuttonImage.sprite = skipsp;
+        autobuttonImage.sprite = autosp;
     }
     private void CloseLog()
     {
@@ -551,6 +612,16 @@ public class GameController : MonoBehaviour
     {
         menuPanel.SetActive(true);
         OpenButtonAudio.Play();
+        isAuto = false;
+        isSkip = false;
+        Button autobtn = auto.GetComponent<Button>();
+        Sprite autosp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image autobuttonImage = autobtn.GetComponent<Image>();
+        Button skipbtn = skip.GetComponent<Button>();
+        Sprite skipsp = Instantiate(Resources.Load<Sprite>("ConfigImages/Button 2"));
+        Image skipbuttonImage = skipbtn.GetComponent<Image>();
+        skipbuttonImage.sprite = skipsp;
+        autobuttonImage.sprite = autosp;
     }
     private void CloseMenuPanel()
     {
@@ -790,5 +861,48 @@ public class GameController : MonoBehaviour
     public void SaveThumbnailimage()
     {
         ScreenCapture.CaptureScreenshot("Assets/Resources/SaveThumbnails/screenshottmp.png");
+    }
+
+    /**
+    * 対応するラベルまでジャンプする
+    */
+    private void JumpTo(string parameter)
+    {
+        parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
+        _pageQueue = _subScenes[parameter];
+    }
+
+    /**
+    * 選択肢の設定
+    */
+    private void SetSelectButton(string name, string cmd, string parameter)
+    {
+        cmd = cmd.Replace(COMMAND_SELECT, "");
+        Debug.Log("SetSelectButton() cmd = " + cmd);
+        name = name.Substring(name.IndexOf('"') + 1, name.LastIndexOf('"') - name.IndexOf('"') - 1);
+        Debug.Log("SetSelectButton() name = " + name);
+        Button button = _selectButtonList.Find(n => n.name == name);
+        Debug.Log("SetSelectButton() button = " + button);
+        if (button == null)
+        {
+            button = Instantiate(Resources.Load<Button>(prefabsDirectory + SELECT_BUTTON_PREFAB), selectButtons.transform);
+            button.name = name;
+            button.onClick.AddListener(() => SelectButtonOnClick(name));
+            _selectButtonList.Add(button);
+        }
+        parameter = parameter.Substring(parameter.IndexOf('"') + 1, parameter.LastIndexOf('"') - parameter.IndexOf('"') - 1);
+        button.image.GetComponentInChildren<Text>().text = parameter;
+    }
+
+    /**
+    * 選択肢がクリックされた
+    */
+    private void SelectButtonOnClick(string label)
+    {
+        foreach (Button button in _selectButtonList) Destroy(button.gameObject);
+        _selectButtonList.Clear();
+        JumpTo('"' + label + '"');
+        choicePanel.SetActive(false);
+        ShowNextPage();
     }
 }

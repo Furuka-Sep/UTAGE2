@@ -53,7 +53,7 @@
 !charaimg_active="left"="true"
 &none「おじいさんとおばあさんは二人で仲睦まじく余生をおくりました」
 &none「～おしどり夫婦END～」
-!jump_to="END"
+&!jump_to="END"
 
 
 #NEXT1&
@@ -112,7 +112,7 @@ none「おじいさんとおばあさんが桃を食べようと桃を切って�
 
 #kiji_nakama&
 桃太郎「仲間は一人でも多いほうがいいな。きびだんごをあげよう」
-!background_isprite="onigashima"
+&!background_isprite="onigashima"
 &!bgm_sound="鬼ヶ島"
 !bgm_play=""
 &!charaimg_active="right"="false"
@@ -204,7 +204,8 @@ none「おじいさんとおばあさんが桃を食べようと桃を切って�
 
 
 #END&
-!background_sprite="fin"
+none「めでたし、めでたし」
+&!background_sprite="fin"
 &!charaimg_active="center"="false"
 !charaimg_active="right"="flase"
 !charaimg_active="left"="flase"
